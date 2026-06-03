@@ -1,0 +1,268 @@
+# Software Development
+
+Java
+Python
+C
+C++
+C#
+JavaScript
+TypeScript
+PHP
+Go
+Rust
+Kotlin
+Swift
+Spring Boot
+Hibernate
+JPA
+React
+Angular
+Vue.js
+Node.js
+Express.js
+Docker
+Kubernetes
+Git
+GitHub
+Jenkins
+REST API
+GraphQL
+Microservices
+
+# Data Science & AI
+
+Machine Learning
+Deep Learning
+Artificial Intelligence
+Data Science
+Natural Language Processing
+Computer Vision
+TensorFlow
+PyTorch
+Scikit-Learn
+Pandas
+NumPy
+Data Analytics
+Big Data
+Apache Spark
+Hadoop
+Tableau
+Power BI
+
+# Database
+
+MySQL
+PostgreSQL
+MongoDB
+Oracle
+SQL Server
+SQLite
+Redis
+Cassandra
+
+# Cloud & DevOps
+
+AWS
+Azure
+Google Cloud Platform
+EC2
+S3
+Lambda
+Terraform
+Ansible
+CI/CD
+Linux
+Shell Scripting
+
+# Cyber Security
+
+Ethical Hacking
+Penetration Testing
+Network Security
+Cyber Security
+Vulnerability Assessment
+Incident Response
+SIEM
+Cryptography
+
+# Networking
+
+Cisco
+CCNA
+Routing
+Switching
+TCP/IP
+DNS
+DHCP
+Firewall
+VPN
+
+# Mechanical Engineering
+
+AutoCAD
+SolidWorks
+CATIA
+ANSYS
+MATLAB
+PLC
+CNC
+Manufacturing
+Lean Manufacturing
+Six Sigma
+Quality Control
+
+# Civil Engineering
+
+AutoCAD Civil 3D
+STAAD Pro
+ETABS
+Revit
+Surveying
+Quantity Estimation
+Construction Management
+Structural Analysis
+
+# Electrical Engineering
+
+Power Systems
+PLC
+SCADA
+Embedded Systems
+VLSI
+Circuit Design
+MATLAB
+Electrical Maintenance
+
+# Electronics Engineering
+
+Arduino
+Raspberry Pi
+Embedded C
+Microcontrollers
+PCB Design
+IoT
+FPGA
+
+# Healthcare
+
+Patient Care
+Clinical Research
+Medical Coding
+Phlebotomy
+Nursing
+Electronic Health Records
+Healthcare Management
+
+# Finance & Accounting
+
+Tally
+GST
+Taxation
+Financial Analysis
+Bookkeeping
+Auditing
+QuickBooks
+SAP FICO
+Investment Analysis
+
+# Human Resources
+
+Recruitment
+Talent Acquisition
+Payroll Management
+Employee Relations
+Performance Management
+HR Analytics
+Onboarding
+
+# Sales & Marketing
+
+Digital Marketing
+SEO
+SEM
+Google Ads
+Social Media Marketing
+Content Marketing
+Email Marketing
+Lead Generation
+Sales Management
+CRM
+
+# Business & Management
+
+Project Management
+Agile
+Scrum
+Kanban
+Business Analysis
+Strategic Planning
+Operations Management
+Risk Management
+
+# Design
+
+UI Design
+UX Design
+Figma
+Adobe Photoshop
+Adobe Illustrator
+Adobe XD
+Canva
+Graphic Design
+Video Editing
+
+# Content & Media
+
+Content Writing
+Copywriting
+Technical Writing
+Blog Writing
+Proofreading
+Journalism
+Public Relations
+
+# Education
+
+Teaching
+Curriculum Development
+Classroom Management
+Lesson Planning
+Student Assessment
+
+# Legal
+
+Legal Research
+Contract Drafting
+Corporate Law
+Compliance
+Litigation
+
+# Hospitality
+
+Hotel Management
+Food & Beverage Service
+Front Office Operations
+Customer Service
+Event Management
+
+# Supply Chain & Logistics
+
+Inventory Management
+Warehouse Management
+Procurement
+Logistics
+Supply Chain Management
+Demand Forecasting
+
+# Soft Skills
+
+Communication
+Leadership
+Problem Solving
+Critical Thinking
+Teamwork
+Time Management
+Presentation Skills
+Negotiation
+Decision Making
+Adaptability
