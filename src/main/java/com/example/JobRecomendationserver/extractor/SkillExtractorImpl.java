@@ -71,11 +71,23 @@ public class SkillExtractorImpl implements SkillExtractor {
 
         List<String> extractedSkills = new ArrayList<>();
 
-        String lowerCaseResume = resumeText.toLowerCase();
+       // String lowerCaseResume = resumeText.toLowerCase();
+        if(resumeText==null || resumeText.isEmpty()){
+            return extractedSkills;
+        }
+
+        String nomalizedResume=resumeText.toLowerCase()
+                .replace("-"," ")
+                .replace("_"," ")
+                .replace("/", " ")
+                .replace("&", " ")
+                .replaceAll("[^a-z0-9 ]", " ")
+                .replaceAll("\\s+", " ")
+                .trim();
 
         for (String skill : knownSkills) {
 
-            if (lowerCaseResume.contains(skill.toLowerCase())) {
+            if (nomalizedResume.contains(skill.toLowerCase())) {
                 extractedSkills.add(skill);
             }
         }

@@ -6,6 +6,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Entity
 @Table(name="job_role")
 @Data
@@ -23,6 +28,10 @@ public class JobRole {
     private String location;
     @Column(columnDefinition = "TEXT")
     private String description;
-    private String requiredSkills;
+   // @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection
+    @CollectionTable(name = "job_role_required_skills",joinColumns = @JoinColumn(name = "job_role_id"))
+    @Column(name = "skill")
+    private List<String> requiredSkills=new ArrayList<>();
 
 }

@@ -1,13 +1,18 @@
 package com.example.JobRecomendationserver.service;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.example.JobRecomendationserver.DTO.MLResponse;
 import com.example.JobRecomendationserver.DTO.ResumeResponseDTO;
+import com.example.JobRecomendationserver.DTO.SkillGapResponse;
 import com.example.JobRecomendationserver.Parser.ResumeParser;
+import com.example.JobRecomendationserver.entity.JobRole;
 import com.example.JobRecomendationserver.entity.Resume;
 
+import com.example.JobRecomendationserver.repository.JobRepo;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +30,8 @@ import org.springframework.beans.factory.annotation.Value;
 //import java.net.http.HttpHeaders;
 import org.springframework.http.HttpHeaders;
 
-import java.util.Map;
-import java.util.UUID;
-
 import com.example.JobRecomendationserver.extractor.SkillExtractor;
+import com.example.JobRecomendationserver.DTO.RolePrediction;
 
 @Service
 public class ResumeServiceImpl implements ResumeService {
@@ -37,6 +40,8 @@ public class ResumeServiceImpl implements ResumeService {
     private final RestTemplate restTemplate;
     private final ResumeRepo resumeRepo;
     private final SkillExtractor skillExtractor;
+    private final JobRepo jobRepo;
+    private final SkillGapService skillGapService;
      @Value("${ml.api.url}")
        private String url;
      //private final SkillExtraction skillExtraction;
@@ -46,13 +51,17 @@ public class ResumeServiceImpl implements ResumeService {
     public ResumeServiceImpl(ResumeParser resumeParser,
                              RestTemplate restTemplate,
                              ResumeRepo resumeRepo,
-                            SkillExtractor skillExtractor) {
+                            SkillExtractor skillExtractor,
+                             JobRepo jobRepo,
+                             SkillGapService skillGapService) {
         this.resumeParser = resumeParser;
 //        this.skillExtraction = skillExtraction;
 //        this.roleRecommendation = roleRecommendation;
         this.restTemplate=restTemplate;
         this.resumeRepo=resumeRepo;
         this.skillExtractor = skillExtractor;
+        this.jobRepo=jobRepo;
+        this.skillGapService=skillGapService;
     }
 
     @Override
@@ -106,6 +115,7 @@ public class ResumeServiceImpl implements ResumeService {
             if (ml == null|| ml.getRole()==null || ml.getRole().isBlank()) {
              throw new IllegalStateException("No response received from ML service");
              }
+            System.out.println("ML Roles = " + ml.getRecommendedRoles());
             // List<String> skills = ml.getSkills() != null ? ml.getSkills() : Collections.emptyList();
             
 
@@ -122,12 +132,81 @@ public class ResumeServiceImpl implements ResumeService {
                     .build();
 
             resumeRepo.save(resume);
+//            List<String> roles = ml.getRecommendedRoles()
+//                    .stream()
+//                    .map(RolePrediction::getRole)   // extract role string
+//                    .toList();
+
+            // roles from ML
+            List<String> roles = ml.getRecommendedRoles()
+                    .stream()
+                    .map(RolePrediction::getRole)
+                    .filter(Objects::nonNull)
+                    .toList();
+
+// normalize
+            List<String> normalizedRoles = roles.stream()
+                    .map(String::trim)
+                    .map(String::toLowerCase)
+                    .filter(s -> !s.isBlank())
+                    .toList();
+
+// fetch jobs
+            List<JobRole> jobs = new ArrayList<>();
+
+            for (String role : normalizedRoles) {
+
+                // split into words for better matching
+                String[] words = role.split(" ");
+
+                for (String word : words) {
+                    if (!word.isBlank()) {
+                        jobs.addAll(jobRepo.searchByRoleName(word));
+                    }
+                }
+            }
+            jobs = jobs.stream()
+                    .collect(Collectors.collectingAndThen(
+                            Collectors.toMap(
+                                    j -> j.getRoleName() + "_" + j.getCompany(),
+                                    j -> j,
+                                    (j1, j2) -> j1
+                            ),
+                            m -> new ArrayList<>(m.values())
+                    ));
+
+// remove duplicates
+//            jobs = jobs.stream()
+//                    .distinct()
+//                    .toList();
+
+            List<Map<String, Object>> jobMatches = new ArrayList<>();
+
+            // 6. Skill gap analysis for each job
+            for (JobRole job : jobs) {
+
+                SkillGapResponse gap =
+                        skillGapService.analyze(skills, job.getRequiredSkills());
+
+                Map<String, Object> map = new HashMap<>();
+                map.put("role", job.getRoleName());
+                map.put("company", job.getCompany());
+                map.put("domain", job.getDomain());
+                map.put("location", job.getLocation());
+
+                map.put("matchPercentage", gap.getMatchPercentage());
+                map.put("matchedSkills", gap.getMatchedSkills());
+                map.put("missingSkills", gap.getMissingSkills());
+
+                jobMatches.add(map);
+            }
 
 // Return response
             return ResumeResponseDTO.builder()
                     .skills(skills)
                     .recommendedRole(ml.getRole())
                     .recommendedRoles(ml.getRecommendedRoles())
+                    .jobMatches(jobMatches)
                     .build();
 
         } catch (Exception e) {

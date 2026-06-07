@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import jakarta.persistence.JoinColumn;
 
 import java.util.List;
 
@@ -26,8 +27,11 @@ public class Resume {
 
     private String recommendedRole;
 
-    @ElementCollection
-    @CollectionTable(name="resume_skills",joinColumns = @JoinColumn(name="resume_id"))
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "resume_skills",
+            joinColumns = @JoinColumn(name = "resume_id")
+    )
     @Column(name = "skill")
     private List<String> skills;
 
